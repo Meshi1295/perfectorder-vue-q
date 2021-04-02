@@ -11,15 +11,8 @@ function readFiles(options) {
     return firebaseInstance.firebase.database().ref(`users/${window.user.uid}/allFolders/${options.folderId}/${options.secondEntity}/`)
         .once('value')
         .then(res => {
-            const arr = []
-            const map = res.val();
-            for (const key in map) {
-                const item = map[key];
-                item.id = key;
-                arr.push(item)
-            }
-            console.log(arr, 'arrFiles')
-            return arr;
+            console.log(res, 'arrFiles')
+            return _getArray(res)
         })
 }
 
@@ -27,10 +20,8 @@ function getFile(options) {
     return firebaseInstance.firebase.database().ref(`users/${window.user.uid}/allFolders/${options.folderId}/${options.secondEntity}/${options.fileId}`)
         .once('value')
         .then(res => {
-            const map = res.val();
-            map.id = res.key;
-            console.log(map, 'arrFiles')
-            return map;
+            console.log(res, 'oneFiles')
+            return _getOneObj(res)
         })
 }
 
@@ -38,10 +29,8 @@ function getFolder(options) {
     return firebaseInstance.firebase.database().ref(`users/${window.user.uid}/${options.entity}/${options.folderId}`)
         .once('value')
         .then(res => {
-            const map = res.val();
-            map.id = res.key;
-            console.log(map, 'arrFolder')
-            return map;
+            console.log(res, 'oneFolder')
+           return  _getOneObj(res)
         })
 }
 
@@ -58,9 +47,15 @@ function removeFile(options) {
 }
 
 
-function UpdatedById(options) {
+function UpdatedFileById(options) {
     return firebaseInstance.firebase.database().ref(`users/${window.user.uid}/allFolders/${options.folderId}/${options.secondEntity}/${options.fileId}`)
         .update(options.file)
+}
+
+function updateFolderById(options){
+    return firebaseInstance.firebase.database().ref(`users/${window.user.uid}/${options.entity}/${options.id}/`)
+        .update(options.folder)
+
 }
 
 
@@ -68,24 +63,21 @@ function readFolders(options) {
     return firebaseInstance.firebase.database().ref(`users/${window.user.uid}/${options.entity}`)
         .once('value')
         .then(res => {
+            console.log(res, 'arrFolders')
             return _getArray(res)
         })
 }
 
 function createFolder(options) {
     return firebaseInstance.firebase.database().ref(`users/${window.user.uid}/${options.entity}/`)
-        .push({name: options.name});
+        .push(options.folder);
 }
 
 function removeFolder(options) {
     return firebaseInstance.firebase.database().ref(`users/${window.user.uid}/${options.entity}/${options.folderId}`).remove()
 }
 
-function updateFolder(options){
-    return firebaseInstance.firebase.database().ref(`users/${window.user.uid}/${options.entity}/${options.folderId}/`)
-        .update({name:options.folder})
 
-}
 
 function _getArray(res) {
     const arr = []
@@ -99,6 +91,12 @@ function _getArray(res) {
     return arr;
 }
 
+function _getOneObj (res){
+    const map = res.val();
+    map.id = res.key;
+    return map;
+}
+
 
 export default {
     readFolders,
@@ -107,8 +105,8 @@ export default {
     createFiles,
     removeFile,
     removeFolder,
-    UpdatedById,
-    updateFolder,
+    UpdatedFileById,
+    updateFolderById,
     getFile,
     getFolder,
     getRef

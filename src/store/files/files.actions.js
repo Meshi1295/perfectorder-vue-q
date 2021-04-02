@@ -32,7 +32,7 @@ export default {
         file.id = state.editedFileId
 
         //saves in db
-        await database.UpdatedById({entity: 'files',fileId: file.editedFileId, file})
+        await database.UpdatedFileById({secondEntity: 'files',fileId: file.editedFileId, file})
 
         //saves in store
         commit ('resetEditedFile')

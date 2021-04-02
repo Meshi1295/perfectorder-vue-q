@@ -4,15 +4,15 @@ export default {
 
     setEditedFolderId: ((state, id) => state.editedFolderId = id),
 
-    setEditedFolder: ((state, folder) => state.editedFolder = folder),
+    setEditedFolder: ((state, folder) => state.editedFolder.name = folder),
 
     resetEditedFolderId: ((state) => state.editedFolderId = ''),
 
     resetEditedFolder: ((state) => {
-        for (const key of state.editedFolder) {
+        for (let key in state.editedFolder) {
         state.editedFolder[key] = ''
         }
-            delete state.editedFolder.id;
+       delete state.editedFolder.id;
     }),
 
 

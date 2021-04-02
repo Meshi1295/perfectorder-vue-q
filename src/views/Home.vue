@@ -20,10 +20,8 @@ export default {
     return {
       tableFolders: 'allFolders',
       isReady: false
-
     }
   },
-
   methods: {
     ...mapActions('folders',['getFolders']),
 

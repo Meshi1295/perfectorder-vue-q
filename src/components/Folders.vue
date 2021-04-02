@@ -77,6 +77,7 @@ export default {
     },
 
     updateFolder(id){
+      this.setEditedFolderId(id)
         this.$router.push(`/addFolder/${id}`)
 
     }

@@ -1,44 +1,54 @@
 <template>
   <div>
-
     <q-input filled v-model="nameFolder">
-
       <template v-slot:prepend>
         <q-icon name="folder"/>
       </template>
       <q-btn v-if="waitForData" push color="primary" label="הוסף תקייה" @click="insert()"/>
-      <q-btn v-if="!waitForData"  push color="primary" label="עדכן תקייה" @click="update()"/>
+      <q-btn v-if="!waitForData"  push color="primary" label="עדכן תקייה" @click="update(editedFolder.id)"/>
 
     </q-input>
   </div>
 </template>
 
 <script>
+import {mapActions, mapMutations, mapState} from 'vuex'
+
 import firebaseDatabase from '../drivers/firebase/database'
 
 export default {
   name: "AddFolder",
-  components: {},
+  computed: mapState('folders',['editedFolder']),
+
+
   data: () => ({
 
     nameFolder: '',
     folder: null,
     tableFolders: 'allFolders',
-    folderId:'',
     waitForData: false
-
   }),
 
   methods: {
+    ...mapActions('folders', ['insertFolder','updateFolder']),
+    ...mapMutations('folders', ['setEditedFolder', 'setEditedFolderId']),
+
+    localEditedNameFolder(){
+     this.setEditedFolder(this.nameFolder)
+    },
+
     insert() {
-      firebaseDatabase.createFolder({entity: this.tableFolders, name: this.nameFolder})
+      this.localEditedNameFolder()
+          this.insertFolder()
           .then(() => {
             this.$router.push(`/home`)
           })
     },
 
-    update() {
-      firebaseDatabase.updateFolder({entity: this.tableFolders, folderId:this.folderId ,folder: this.nameFolder})
+    update(id) {
+      this.localEditedNameFolder()
+      this.setEditedFolderId(id)
+      this.updateFolder()
           .then(() => {
             this.$router.push(`/home`)
           })
