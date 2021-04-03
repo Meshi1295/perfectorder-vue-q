@@ -53,8 +53,9 @@ function UpdatedFileById(options) {
 }
 
 function updateFolderById(options){
-    return firebaseInstance.firebase.database().ref(`users/${window.user.uid}/${options.entity}/${options.id}/`)
-        .update(options.folder)
+    debugger;
+    return firebaseInstance.firebase.database().ref(`users/${window.user.uid}/${options.entity}/${options.folderId}/`)
+        .update({name:options.name})
 
 }
 
@@ -110,6 +111,4 @@ export default {
     getFile,
     getFolder,
     getRef
-
-
 }

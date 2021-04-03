@@ -2,13 +2,23 @@ export default {
 
     setFolders: ((state, folders) => state.folders = folders),
 
-    setEditedFolderId: ((state, id) => state.editedFolderId = id),
+    setEditedFolderId: ((state, id) => {
+        debugger;
+        state.editedFolderId = id
+    }),
 
-    setEditedFolder: ((state, folder) => state.editedFolder.name = folder),
+    setEditedFolder: ((state, folder) => {
+        debugger;
+        state.editedFolder.name = folder
+    }),
 
-    resetEditedFolderId: ((state) => state.editedFolderId = ''),
+    resetEditedFolderId: ((state) => {
+        debugger;
+        state.editedFolderId = ''
+    }),
 
     resetEditedFolder: ((state) => {
+        debugger;
         for (let key in state.editedFolder) {
         state.editedFolder[key] = ''
         }
@@ -16,19 +26,18 @@ export default {
     }),
 
 
-    editFolder: ((state, folder) => {
-       const index = state.folders.findIndex(p => p.id === folder.id)
-        state.folders.splice(index, 1, folder)
+    editFolder: ((state, folderId) => {
+        debugger;
+       const index = state.folders.findIndex(p => p.id === folderId)
+        state.folders.splice(index, 1, folderId)
     }),
 
     deleteFolder: ((state, folderId) => {
         const index =  state.folders.findIndex(p => p.id === folderId)
         state.folders.splice(index,1);
-
     }),
 
     insertFolder: ((state, folder) => {
         state.folders.push(folder)
     })
-
 }

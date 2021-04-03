@@ -5,7 +5,7 @@
         <q-icon name="folder"/>
       </template>
       <q-btn v-if="waitForData" push color="primary" label="הוסף תקייה" @click="insert()"/>
-      <q-btn v-if="!waitForData"  push color="primary" label="עדכן תקייה" @click="update(editedFolder.id)"/>
+      <q-btn v-if="!waitForData"  push color="primary" label="עדכן תקייה" @click="update(editedFolderId)"/>
 
     </q-input>
   </div>
@@ -18,7 +18,7 @@ import firebaseDatabase from '../drivers/firebase/database'
 
 export default {
   name: "AddFolder",
-  computed: mapState('folders',['editedFolder']),
+  computed: mapState('folders',['editedFolderId']),
 
 
   data: () => ({
@@ -30,7 +30,7 @@ export default {
   }),
 
   methods: {
-    ...mapActions('folders', ['insertFolder','updateFolder']),
+    ...mapActions('folders', ['insertFolder','updateFolder','setEditFolderById']),
     ...mapMutations('folders', ['setEditedFolder', 'setEditedFolderId']),
 
     localEditedNameFolder(){
@@ -49,6 +49,7 @@ export default {
       this.localEditedNameFolder()
       this.setEditedFolderId(id)
       this.updateFolder()
+          this.setEditFolderById()
           .then(() => {
             this.$router.push(`/home`)
           })

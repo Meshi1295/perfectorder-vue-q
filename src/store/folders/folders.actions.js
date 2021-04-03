@@ -23,6 +23,7 @@ export default {
 
 
     updateFolder: async ({state, commit}) => {
+        debugger;
 
         const folder = {}
 
@@ -30,20 +31,20 @@ export default {
         folder.id = state.editedFolderId
 
         //saves in db
-        await database.updateFolderById({entity: 'allFolders', folderId: folder.id, folder})
+        await database.updateFolderById({entity: 'allFolders', folderId: folder.id, name:folder})
 
         //saves in store
         commit('resetEditedFolder')
         commit('resetEditedFolderId')
 
-        commit('editedFolder', folder)
+        commit('editFolder', folder)
     },
 
     insertFolder: async ({state, commit}) => {
 
         const folder = {}
 
-        Object.assign(folder, state.editedFolder)
+        Object.assign(folder, state.editedFolder.name)
 
         // save in db
         folder.id = (await database.createFolder({entity: 'allFolders',folder})).key
