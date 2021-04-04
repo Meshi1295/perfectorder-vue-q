@@ -2,11 +2,12 @@ import database from "../../drivers/firebase/database/index";
 
 export default {
 
-    getFiles: async ({ commit }) => {
+    getFiles: async ({ state, commit }) => {
 
-        const files = await database.readFiles({entity: 'files'});
+        const files = await database.readFiles({entity: 'allFolders',folderId: state.editedFolderId, secondEntity: 'files'});
 
         commit('setFiles', files)
+        // commit('editedFolderId')
 
     },
 
@@ -48,7 +49,7 @@ export default {
         Object.assign(file, state.editedFile)
 
         //    save in db
-        file.id = (await database.createFiles({entity: 'files', file})).key
+        file.id = (await database.createFiles({entity: 'allFolders', folderId: state.editedFolderId, secondEntity: 'files', file})).key
 
         //    sava in store
         commit('resetEditedFile')
@@ -56,13 +57,15 @@ export default {
         commit('insertFile')
     },
 
-    setEditFileById: async ({state, commit}) => {
+    setEditFileById: async ({state, commit, id}) => {
+       const folderId = id
 
         let file = {};
+
         if(state.files.length && state.files.find(file => file.id === state.editedFileId)) {
             file = state.files.find(file => file.id === state.editedFileId);
         }else {
-            file = await database.getFile({entity: 'files', fileId: state.editedFileId})
+            file = await database.getFile({entity: 'allFolders',folderId: state.editedFolderId, secondEntity:'files', fileId: state.editedFileId })
         }
 
         commit('setEditedFile', file)

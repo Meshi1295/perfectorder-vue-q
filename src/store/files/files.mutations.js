@@ -1,15 +1,31 @@
 export default {
 
-    setFiles: ((state, files) => state.files = files),
+    setFiles: ((state, files) => {
+        debugger;
+        state.files = files
+    }),
 
-    setEditedFileId: ((state, id) => state.editedFileId = id),
+    setEditedFileId: ((state, fileId) => {
+        debugger;
+        state.editedFileId = fileId
+    }),
+    setEditedFolderIdFromFiles: ((state, folderId) => {
+        debugger;
+        state.editedFolderId = folderId
+    }),
 
-    setEditedFile: ((state, file) => state.editedFile = file),
+    setEditedFile: ((state, file) => {
+        debugger;
+        state.editedFile = file
+    }),
 
-    resetEditedFileId: ((state) => state.editedFileId = ''),
+    resetEditedFileId: ((state) => {
+        debugger;
+     state.editedFileId = ''
+    }),
 
     resetEditedFile: ((state) => {
-        for (const key in state.editedFile) {
+        for (const key of state.editedFile) {
             state.editedFile[key] = ''
         }
         delete state.editedFile.id;

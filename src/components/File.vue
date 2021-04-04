@@ -51,9 +51,8 @@ import firebaseDatabase from '../drivers/firebase/database'
 
 export default {
   name: "File",
-  props: ['tableName','folderId', 'fileId'],
 
-  computed: mapState ('files', ['editedFile']),
+  computed: mapState ('files', ['editedFile', 'editedFolderId', 'editedFileId']),
 
   data: () => ({
 
@@ -71,7 +70,7 @@ export default {
 
   methods: {
     ...mapActions('files', ['insertFile', 'updateFile', 'setEditFileById']),
-    ...mapMutations('files',['setEditedFile', 'setEditedFileId']),
+    ...mapMutations('files',['setEditedFile', 'setEditedFileId', 'setEditedFolderId']),
 
     localSetEditedFile(){
       this.setEditedFile(this.localEditedFile)
@@ -80,13 +79,13 @@ export default {
     insert(){
       this.localSetEditedFile();
       this.insertFile();
-      this.localInsert()
+      // this.localInsert()
     },
 
     update(){
       this.localSetEditedFile();
       this.updateFile();
-      this.localUpdate()
+      // this.localUpdate()
     },
 
     localInsert() {
@@ -109,19 +108,20 @@ export default {
           }
       )
     },
-    localUpdate() {
-      firebaseDatabase.UpdatedById({
-        secondEntity: this.tableName, folderId: this.folderId,
-        fileId: this.editedFile.id, file: this.editedFile
-      })
-          .then(() => {
-            this.$router.push(`/folder/${this.folderId}`)
-          })
-    }
+    // localUpdate() {
+    //   firebaseDatabase.UpdatedById({
+    //     secondEntity: this.tableName, folderId: this.folderId,
+    //     fileId: this.editedFile.id, file: this.editedFile
+    //   })
+    //       .then(() => {
+    //         this.$router.push(`/folder/${this.folderId}`)
+    //       })
+    // }
   },
 
   created() {
-    this.setEditedFileId(this.$route.params.id)
+    this.setEditedFileId(this.$route.params.fileId)
+    this.setEditedFolderId(this.$route.params.folderId)
     this.setEditFileById()
     .then(() => {
       Object.assign(this.localEditedFile, this.editedFile)

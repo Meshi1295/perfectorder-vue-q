@@ -25,9 +25,11 @@ export default {
   methods: {
     ...mapActions('folders',['getFolders']),
 
-   async read(){
-      await this.getFolders()
-      this.isReady = true
+    read(){
+       this.getFolders()
+     .then(() =>{
+       this.isReady = true
+     })
     },
 
     goToAddFolder() {

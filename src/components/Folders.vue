@@ -30,7 +30,7 @@
         </div>
         <q-btn flat color="white" @click="specificFolder(folder.id)">פתיחה</q-btn>
         <q-btn flat color="white" icon="delete" @click="removeFolders(folder.id)"></q-btn>
-        <q-btn flat color="white" icon="edit" @click="updateFolder(folder.id)"></q-btn>
+        <q-btn flat color="white" icon="edit" @click="update(folder.id)"></q-btn>
 
       </q-carousel-slide>
     </q-carousel>
@@ -41,7 +41,6 @@
 </template>
 
 <script>
-import firebaseDatabase from '../drivers/firebase/database'
 
 import {mapState, mapActions, mapMutations} from 'vuex'
 
@@ -61,10 +60,13 @@ export default {
   },
 
   methods: {
-    ...mapActions('folders', ['deleteFolder']),
+    ...mapActions('folders', ['deleteFolder','setEditFolderById','updateFolder']),
+    ...mapMutations('files', ['setEditedFolderIdFromFiles']),
     ...mapMutations('folders', ['setEditedFolderId']),
 
+
     specificFolder(id) {
+      this.setEditedFolderIdFromFiles(id)
       this.$router.push(`/folder/${id}`)
     },
 
@@ -76,10 +78,8 @@ export default {
       })
     },
 
-    updateFolder(id){
-      this.setEditedFolderId(id)
+    update(id){
         this.$router.push(`/addFolder/${id}`)
-
     }
   },
 

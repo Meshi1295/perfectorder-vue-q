@@ -1,6 +1,6 @@
 <template>
   <div>
-    <q-card v-for="(file,key) of Files"
+    <q-card v-for="(file,key) of files"
             :key="key"
             class="my-card" flat bordered>
       <q-card-section horizontal>
@@ -50,8 +50,6 @@ import {mapState, mapActions} from 'vuex'
 export default {
   name: "Files",
   props: ['tableName'],
-
-  data: () => ({}),
 
   computed: mapState('files', ['editedFileId', 'files']),
 

@@ -3,22 +3,19 @@ export default {
     setFolders: ((state, folders) => state.folders = folders),
 
     setEditedFolderId: ((state, id) => {
-        debugger;
         state.editedFolderId = id
     }),
 
     setEditedFolder: ((state, folder) => {
-        debugger;
-        state.editedFolder.name = folder
+        console.log(folder,'פולדר במיוטיישן')
+        state.editedFolder = folder
     }),
 
     resetEditedFolderId: ((state) => {
-        debugger;
         state.editedFolderId = ''
     }),
 
     resetEditedFolder: ((state) => {
-        debugger;
         for (let key in state.editedFolder) {
         state.editedFolder[key] = ''
         }

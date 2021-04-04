@@ -5,7 +5,7 @@
         <q-icon name="folder"/>
       </template>
       <q-btn v-if="waitForData" push color="primary" label="הוסף תקייה" @click="insert()"/>
-      <q-btn v-if="!waitForData"  push color="primary" label="עדכן תקייה" @click="update(editedFolderId)"/>
+      <q-btn v-if="!waitForData"  push color="primary" label="עדכן תקייה" @click="update()"/>
 
     </q-input>
   </div>
@@ -18,11 +18,12 @@ import firebaseDatabase from '../drivers/firebase/database'
 
 export default {
   name: "AddFolder",
-  computed: mapState('folders',['editedFolderId']),
+  computed: mapState('folders',['editedFolderId','folders']),
 
 
   data: () => ({
 
+    folderId:'',
     nameFolder: '',
     folder: null,
     tableFolders: 'allFolders',
@@ -34,27 +35,26 @@ export default {
     ...mapMutations('folders', ['setEditedFolder', 'setEditedFolderId']),
 
     localEditedNameFolder(){
-     this.setEditedFolder(this.nameFolder)
+     this.setEditedFolder({name:this.nameFolder})
     },
 
     insert() {
-      this.localEditedNameFolder()
-          this.insertFolder()
+      this.localEditedNameFolder(this.nameFolder)
+          this.insertFolder({name:this.nameFolder})
           .then(() => {
             this.$router.push(`/home`)
           })
     },
 
-    update(id) {
+    update() {
+      console.log(this.folderId, 'folderId')
       this.localEditedNameFolder()
-      this.setEditedFolderId(id)
+      // this.setEditedFolderId(this.folderId)
       this.updateFolder()
-          this.setEditFolderById()
           .then(() => {
             this.$router.push(`/home`)
           })
     }
-
   },
 
   created() {
@@ -65,11 +65,11 @@ export default {
     } else {
       this.waitForData=false
       this.folderId = this.$route.params.type
-      firebaseDatabase.getFolder({entity: this.tableFolders, folderId: this.folderId})
-      .then((res) =>{
-        this.nameFolder = res.name
-
-      })
+      let folder = this.folders.find(folder => folder.id === this.folderId);
+      this.nameFolder = folder.name
+      this.setEditedFolderId(this.$route.params.type)
+      this.setEditFolderById()
+      console.log(folder,'vv')
     }
   }
 }

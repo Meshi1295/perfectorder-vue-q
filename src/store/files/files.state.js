@@ -1,6 +1,8 @@
 export default {
     files: [],
 
+    editedFolderId: '',
+
     editedFileId :'',
 
     editedFile: {

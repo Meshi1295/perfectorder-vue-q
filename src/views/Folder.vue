@@ -1,7 +1,7 @@
 <template>
   <div>
 
-    <Files v-if="waitForData" :files="files" :tableName="tableName"/>
+    <Files v-if="waitForData"/>
     <q-btn class="add-btn" fab icon="add" color="accent" glossy @click="goToAddFile()"/>
 
   </div>
@@ -9,34 +9,33 @@
 
 
 <script>
-import firebaseDatabase from '../drivers/firebase/database'
+import {mapState, mapActions, mapMutations} from 'vuex'
 import Files from '../components/Files'
-
 
 export default {
   name: "Folder",
   components: {
     Files
   },
+  computed: mapState('files', ['editedFileId', 'editedFolderId', 'files']),
 
   data() {
     return {
-
-      waitForData : false,
-      files: {},
-      tableName: 'files'
+      waitForData: false,
     }
   },
 
   methods: {
-    getFiles() {
-      firebaseDatabase.readFiles({secondEntity: this.tableName, id: this.$route.params.id})
-          .then((res) => {
-            debugger
-            this.files = res.filter(file => file.id == this.$route.params.id)
-            console.log(this.files)
-            this.waitForData =true
-          })
+    ...mapActions('files', ['getFiles']),
+    ...mapMutations('files', ['setFiles', 'setEditedFolderIdFromFiles']),
+
+    read() {
+     this.getFiles()
+      .then(() => {
+    //   // this.files = filter(file => file.id === this.$route.params.id)
+    //   // console.log(this.files)
+      this.waitForData = true
+      })
     },
 
     goToAddFile() {
@@ -45,8 +44,7 @@ export default {
   },
 
   created() {
-    debugger
-    this.getFiles();
+    this.read()
   }
 }
 
