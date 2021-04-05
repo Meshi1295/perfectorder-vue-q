@@ -38,21 +38,22 @@
           @click="localEditedFile.isPaid=false" flat label="לא שולם"/>
     </div>
     <br>
-    <q-btn v-if="!editedFile.id" push color="primary" label="הוסף מסמך" @click=" insert()"/>
-    <q-btn v-if="editedFile.id" push color="primary" label="עדכן" @click=" update()"/>
+    <q-btn v-if="!localEditedFile.id" push color="primary" label="הוסף מסמך" @click=" insert()"/>
+    <q-btn v-if="localEditedFile.id" push color="primary" label="עדכן" @click=" update()"/>
 
   </div>
 </template>
 
 <script>
-import { mapState, mapActions, mapMutations } from 'vuex'
-
-import firebaseDatabase from '../drivers/firebase/database'
+import {mapState, mapActions, mapMutations} from 'vuex'
 
 export default {
   name: "File",
 
-  computed: mapState ('files', ['editedFile', 'editedFolderId', 'editedFileId']),
+  computed: {
+    ...mapState('files', ['editedFile', 'editedFolderId', 'editedFileId', 'files']),
+    ...mapState('folders', ['editedFolderId'])
+  },
 
   data: () => ({
 
@@ -61,53 +62,36 @@ export default {
       date: '',
       number: 0,
       price: 0,
-      image: '',
       isPaid: false
     },
     model: null
 
-}),
+  }),
 
   methods: {
-    ...mapActions('files', ['insertFile', 'updateFile', 'setEditFileById']),
-    ...mapMutations('files',['setEditedFile', 'setEditedFileId', 'setEditedFolderId']),
+    ...mapActions('files', ['insertFile', 'updateFile', 'setEditFileById', 'upload']),
+    ...mapMutations('files', ['setEditedFile', 'setEditedFileId',]),
+    ...mapMutations('folders', ['setEditedFolderId']),
 
-    localSetEditedFile(){
+    localSetEditedFile() {
       this.setEditedFile(this.localEditedFile)
     },
 
-    insert(){
+    insert() {
+      this.upload(this.model)
       this.localSetEditedFile();
-      this.insertFile();
-      // this.localInsert()
+      this.insertFile()
+      this.$router.push(`/folder/${this.editedFolderId}`)
     },
 
-    update(){
+    update() {
+      // this.upload()
+      // this.insertFile()
       this.localSetEditedFile();
       this.updateFile();
-      // this.localUpdate()
+      this.$router.push(`/folder/${this.editedFolderId}`)
     },
 
-    localInsert() {
-      firebaseDatabase.firebase.storage().ref(`users/${window.user.uid}/images/${this.model.name}`)
-          .put(this.model).then(storageRef => {
-            storageRef.ref.getDownloadURL()
-                .then((url) => {
-                  this.editedFile.image = url
-                })
-                .then(() => {
-                  firebaseDatabase.createFiles({
-                    secondEntity: this.tableName,
-                    folderId: this.folderId,
-                    file: this.editedFile
-                  })
-                      .then(() => {
-                        this.$router.push(`/folder/${this.folderId}`)
-                      })
-                })
-          }
-      )
-    },
     // localUpdate() {
     //   firebaseDatabase.UpdatedById({
     //     secondEntity: this.tableName, folderId: this.folderId,
@@ -123,13 +107,11 @@ export default {
     this.setEditedFileId(this.$route.params.fileId)
     this.setEditedFolderId(this.$route.params.folderId)
     this.setEditFileById()
-    .then(() => {
-      Object.assign(this.localEditedFile, this.editedFile)
-    })
+        .then(() => {
+          Object.assign(this.localEditedFile, this.editedFile)
+        })
   }
 }
-
-
 
 </script>
 

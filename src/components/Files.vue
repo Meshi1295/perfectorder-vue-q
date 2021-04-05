@@ -45,7 +45,7 @@
 </template>
 
 <script>
-import {mapState, mapActions} from 'vuex'
+import {mapState, mapActions, mapMutations} from 'vuex'
 
 export default {
   name: "Files",
@@ -54,9 +54,16 @@ export default {
   computed: mapState('files', ['editedFileId', 'files']),
 
   methods: {
-    ...mapActions('files', ['deleteFile', 'getFiles']),
+    ...mapActions('files', ['deleteFile']),
+    ...mapMutations('files',['setEditedFileId','setEditedFolderIdFromFiles']),
+
+    remove(fileId){
+      this.setEditedFileId(fileId)
+      this.setEditedFolderIdFromFiles(this.$route.params.id)
+      this.deleteFile()
+    },
+
     goToFile(id) {
-      debugger
       this.$router.push(`/AddFileId/${this.$route.params.id}/${id}`)
 
     }

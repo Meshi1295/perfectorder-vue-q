@@ -2,18 +2,11 @@ export default {
 
     setFolders: ((state, folders) => state.folders = folders),
 
-    setEditedFolderId: ((state, id) => {
-        state.editedFolderId = id
-    }),
+    setEditedFolderId: ((state, id) => state.editedFolderId = id),
 
-    setEditedFolder: ((state, folder) => {
-        console.log(folder,'פולדר במיוטיישן')
-        state.editedFolder = folder
-    }),
+    setEditedFolder: ((state, folder) => state.editedFolder = folder),
 
-    resetEditedFolderId: ((state) => {
-        state.editedFolderId = ''
-    }),
+    resetEditedFolderId: ((state) => state.editedFolderId = ''),
 
     resetEditedFolder: ((state) => {
         for (let key in state.editedFolder) {
@@ -22,11 +15,9 @@ export default {
        delete state.editedFolder.id;
     }),
 
-
-    editFolder: ((state, folderId) => {
-        debugger;
-       const index = state.folders.findIndex(p => p.id === folderId)
-        state.folders.splice(index, 1, folderId)
+    editFolder: ((state, folder) => {
+       const index = state.folders.findIndex(p => p.id === folder)
+        state.folders.splice(index, 1, folder)
     }),
 
     deleteFolder: ((state, folderId) => {
@@ -36,5 +27,5 @@ export default {
 
     insertFolder: ((state, folder) => {
         state.folders.push(folder)
-    })
+    }),
 }

@@ -41,9 +41,7 @@
 </template>
 
 <script>
-
 import {mapState, mapActions, mapMutations} from 'vuex'
-
 
 export default {
   name: "Folders",
@@ -84,12 +82,8 @@ export default {
   },
 
   created() {
-    // if (this.folders.length <= 0){
-    //   this.noFolders = true
-    // }else {
       this.slide = this.folders[0].name
     }
-  // }
 }
 </script>
 

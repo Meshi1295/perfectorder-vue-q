@@ -3,6 +3,7 @@
     <div class="q-pa-md">
       <q-toolbar class="bg-primary text-white q-my-md shadow-2">
         <q-btn flat round dense icon="menu" class="q-mr-sm"/>
+        <q-btn push color="primary" @click="logOut()">התנתק</q-btn>
 
         <q-space/>
 
@@ -39,6 +40,7 @@
 <script>
 
 import Home from "@/views/Home";
+import firebaseInstance from "@/drivers/firebase";
 
 export default {
   name: 'LayoutDefault',
@@ -54,7 +56,21 @@ export default {
       model: 'one'
 
     }
+  },
+  methods: {
+    logOut(){
+      firebaseInstance.firebase.auth().signOut()
+          .then(() => {
+            window.user = null
+            this.$router.push('/')
+      })
+          .catch(() => {
+            alert('error')
+      });
+
+    }
   }
+
 }
 </script>
 

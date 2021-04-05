@@ -30,7 +30,7 @@ export default {
     ...mapMutations('files', ['setFiles', 'setEditedFolderIdFromFiles']),
 
     read() {
-     this.getFiles()
+      this.getFiles()
       .then(() => {
     //   // this.files = filter(file => file.id === this.$route.params.id)
     //   // console.log(this.files)

@@ -47,9 +47,7 @@ export default {
     },
 
     update() {
-      console.log(this.folderId, 'folderId')
       this.localEditedNameFolder()
-      // this.setEditedFolderId(this.folderId)
       this.updateFolder()
           .then(() => {
             this.$router.push(`/home`)
@@ -69,7 +67,6 @@ export default {
       this.nameFolder = folder.name
       this.setEditedFolderId(this.$route.params.type)
       this.setEditFolderById()
-      console.log(folder,'vv')
     }
   }
 }

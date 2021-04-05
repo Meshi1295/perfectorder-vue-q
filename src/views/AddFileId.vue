@@ -1,7 +1,6 @@
 <template>
   <div>
-    <File v-if="waitForData"
-          :file="file"/>
+    <File v-if="waitForData"/>
 
   </div>
 </template>
@@ -9,7 +8,6 @@
 <script>
 import {mapActions, mapMutations, mapState} from 'vuex'
 
-// import firebaseDatabase from '../drivers/firebase/database'
 import File from "@/components/File";
 
 export default {
@@ -20,6 +18,7 @@ export default {
 
   data: () => ({
 
+    fileId:'',
     waitForData: false,
     file: null,
     tableName: 'files',
@@ -27,12 +26,13 @@ export default {
 
   methods: {
     ...mapActions('files',['setEditFileById']),
-    ...mapMutations('files',['setEditedFolderId']),
-    getFileById() {
+    ...mapMutations('files',['setEditedFolderIdFromFiles','setEditedFileId']),
+    getFileById(fileId) {
       //add folderId
-     this.setEditedFolderId()
+     this.setEditedFolderIdFromFiles(this.editedFolderId)
+      //add fileId
+      this.setEditedFileId(fileId)
       this.setEditFileById()
-
           .then((result) => {
             this.file = result
             this.waitForData = true
@@ -44,17 +44,23 @@ export default {
   created() {
     //if there new file or exist file
     if (this.$route.params.fileId === 'add') {
+      debugger;
       this.waitForData = true
       //folder
 
     } else {
       //files
       this.waitForData = false
-      this.getFileById()
+      debugger;
+      this.getFileById(this.$route.params.fileId)
 
     }
   },
 }
+
+// this.fileId = this.$route.params.type
+// let file = this.files.find(file => file.id === this.fileId);
+// this.file = file
 
 </script>
 

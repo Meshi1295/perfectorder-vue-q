@@ -23,16 +23,15 @@ export default {
 
 
     updateFolder: async ({state, commit}) => {
-        debugger;
 
         const folder = {}
         console.log(state.editedFolderId,'hh')
 
         Object.assign(folder, state.editedFolder)
-        folder.id = state.editedFolderId
 
         //saves in db
-        await database.updateFolderById({entity: 'allFolders', folderId: folder.id, name: folder})
+        await database.updateFolderById({entity: 'allFolders', folderId: state.editedFolderId, folder})
+        folder.id = state.editedFolderId
 
         //saves in store
         commit('resetEditedFolder')

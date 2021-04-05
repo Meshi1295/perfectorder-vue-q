@@ -1,19 +1,18 @@
 import database from "../../drivers/firebase/database/index";
+import firebaseDatabase from "../../drivers/firebase/index"
 
 export default {
 
-    getFiles: async ({ state, commit }) => {
+    getFiles: async ({ state, commit}) => {
 
         const files = await database.readFiles({entity: 'allFolders',folderId: state.editedFolderId, secondEntity: 'files'});
 
         commit('setFiles', files)
-        // commit('editedFolderId')
-
     },
 
     deleteFile: async ({ state, commit}) =>{
 
-        await database.removeFile({entity: 'files', id: state.editedFileId});
+        await database.removeFile({secondEntity: 'files',folderId: state.editedFolderId, fileId: state.editedFileId});
 
         const fileId = state.editedFileId;
 
@@ -33,13 +32,13 @@ export default {
         file.id = state.editedFileId
 
         //saves in db
-        await database.UpdatedFileById({secondEntity: 'files',fileId: file.editedFileId, file})
+        await database.UpdatedFileById({entity: 'allFolders',folderId: state.editedFolderId, secondEntity: 'files',fileId: state.editedFileId, file})
 
         //saves in store
         commit ('resetEditedFile')
         commit ('resetEditedFileId')
 
-        commit('editedFile', file)
+        commit('editFile', file)
     },
 
     insertFile: async ({ state, commit }) => {
@@ -47,6 +46,7 @@ export default {
         const file = {}
 
         Object.assign(file, state.editedFile)
+        console.log(state.editedFile,'ac')
 
         //    save in db
         file.id = (await database.createFiles({entity: 'allFolders', folderId: state.editedFolderId, secondEntity: 'files', file})).key
@@ -54,11 +54,10 @@ export default {
         //    sava in store
         commit('resetEditedFile')
 
-        commit('insertFile')
+        commit('insertFile',file)
     },
 
-    setEditFileById: async ({state, commit, id}) => {
-       const folderId = id
+    setEditFileById: async ({state, commit}) => {
 
         let file = {};
 
@@ -69,5 +68,20 @@ export default {
         }
 
         commit('setEditedFile', file)
-    }
+    },
+
+    upload: async ({ state, commit },model) => {
+        console.log(model,'model')
+
+        await firebaseDatabase.firebase.storage().ref(`users/${window.user.uid}/images/${model.name}`)
+            .put(model)
+            .then(storageRef => {
+                storageRef.ref.getDownloadURL()
+                    .then((url) => {
+                        console.log(url,'url')
+
+                        commit ('setEditedFileImage', url)
+                    })
+            })
+    },
 }

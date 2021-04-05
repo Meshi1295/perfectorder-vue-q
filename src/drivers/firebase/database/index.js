@@ -4,7 +4,6 @@ import database from 'firebase/database';
 
 function getRef (options){
     return firebaseInstance.firebase.database().ref(`users/${window.user.uid}/allFolders/${options.folderId}/${options.secondEntity}/`)
-
 }
 
 function readFiles(options) {
@@ -21,7 +20,7 @@ function getFile(options) {
         .once('value')
         .then(res => {
             console.log(res, 'oneFiles')
-            return _getOneObj(res)
+            return res.val()
         })
 }
 
@@ -34,27 +33,24 @@ function getFolder(options) {
         })
 }
 
-
 function createFiles(options) {
     return firebaseInstance.firebase.database().ref(`users/${window.user.uid}/${options.entity}/${options.folderId}/${options.secondEntity}/`)
         .push(options.file);
 }
 
 function removeFile(options) {
-    return firebaseInstance.firebase.database().ref(`users/${window.user.uid}/allFolders/${options.folderId}/files/${options.fileId}`)
+    return firebaseInstance.firebase.database().ref(`users/${window.user.uid}/allFolders/${options.folderId}/${options.secondEntity}/${options.fileId}`)
         .remove()
-
 }
 
-
 function UpdatedFileById(options) {
-    return firebaseInstance.firebase.database().ref(`users/${window.user.uid}/allFolders/${options.folderId}/${options.secondEntity}/${options.fileId}`)
+    return firebaseInstance.firebase.database().ref(`users/${window.user.uid}/${options.entity}/${options.folderId}/${options.secondEntity}/${options.fileId}`)
         .update(options.file)
 }
 
 function updateFolderById(options){
     return firebaseInstance.firebase.database().ref(`users/${window.user.uid}/${options.entity}/${options.folderId}`)
-        .update({name:options.name.name})
+        .update(options.folder)
 }
 
 function readFolders(options) {
@@ -72,7 +68,8 @@ function createFolder(options) {
 }
 
 function removeFolder(options) {
-    return firebaseInstance.firebase.database().ref(`users/${window.user.uid}/${options.entity}/${options.folderId}`).remove()
+    return firebaseInstance.firebase.database().ref(`users/${window.user.uid}/${options.entity}/${options.folderId}`)
+        .remove()
 }
 
 function _getArray(res) {
