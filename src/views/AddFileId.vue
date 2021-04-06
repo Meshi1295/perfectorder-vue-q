@@ -33,8 +33,7 @@ export default {
       //add fileId
       this.setEditedFileId(fileId)
       this.setEditFileById()
-          .then((result) => {
-            this.file = result
+          .then(() => {
             this.waitForData = true
 
           })
@@ -58,9 +57,6 @@ export default {
   },
 }
 
-// this.fileId = this.$route.params.type
-// let file = this.files.find(file => file.id === this.fileId);
-// this.file = file
 
 </script>
 

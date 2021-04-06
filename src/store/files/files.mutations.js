@@ -14,7 +14,6 @@ export default {
     setEditedFile: ((state, file) => {
         debugger;
         state.editedFile = file
-        console.log(state.editedFile, ' mu')
     }),
 
     setEditedFileImage:((state, url) => {

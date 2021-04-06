@@ -77,30 +77,29 @@ export default {
       this.setEditedFile(this.localEditedFile)
     },
 
-    insert() {
-      this.upload(this.model)
+     insert() {
       this.localSetEditedFile();
-      this.insertFile()
-      this.$router.push(`/folder/${this.editedFolderId}`)
+      this.upload(this.model)
+          .then(res => {
+        console.log(res,'urlImage')
+        this.insertFile()
+        this.$router.push(`/folder/${this.editedFolderId}`)
+      })
+
     },
 
     update() {
-      // this.upload()
-      // this.insertFile()
       this.localSetEditedFile();
-      this.updateFile();
-      this.$router.push(`/folder/${this.editedFolderId}`)
-    },
+      this.upload(this.model)
+      .then(res => {
+        console.log(res,'urlImage')
+        this.updateFile()
+        .then((result) => {
+          this.$router.push(`/folder/${this.editedFolderId}`)
+        })
 
-    // localUpdate() {
-    //   firebaseDatabase.UpdatedById({
-    //     secondEntity: this.tableName, folderId: this.folderId,
-    //     fileId: this.editedFile.id, file: this.editedFile
-    //   })
-    //       .then(() => {
-    //         this.$router.push(`/folder/${this.folderId}`)
-    //       })
-    // }
+      })
+    }
   },
 
   created() {

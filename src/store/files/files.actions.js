@@ -24,7 +24,7 @@ export default {
     },
 
 
-    updateFile: async ({ state, commit }) =>{
+    updateFile:  ({ state, commit }) =>{
 
         const file = {}
 
@@ -32,13 +32,16 @@ export default {
         file.id = state.editedFileId
 
         //saves in db
-        await database.UpdatedFileById({entity: 'allFolders',folderId: state.editedFolderId, secondEntity: 'files',fileId: state.editedFileId, file})
+        return database.UpdatedFileById({entity: 'allFolders',folderId: state.editedFolderId, secondEntity: 'files',fileId: state.editedFileId, file})
+            .then(()=>{
+                //saves in store
+                commit ('resetEditedFile')
+                commit ('resetEditedFileId')
 
-        //saves in store
-        commit ('resetEditedFile')
-        commit ('resetEditedFileId')
+                commit('editFile', file)
+        })
 
-        commit('editFile', file)
+
     },
 
     insertFile: async ({ state, commit }) => {
@@ -70,17 +73,19 @@ export default {
         commit('setEditedFile', file)
     },
 
-    upload: async ({ state, commit },model) => {
+    upload: ({ state, commit, dispatch },model) => {
         console.log(model,'model')
 
-        await firebaseDatabase.firebase.storage().ref(`users/${window.user.uid}/images/${model.name}`)
+         return firebaseDatabase.firebase.storage().ref(`users/${window.user.uid}/images/${state.editedFolderId}/${state.editedFileId}/img`)
             .put(model)
             .then(storageRef => {
-                storageRef.ref.getDownloadURL()
+                return storageRef.ref.getDownloadURL()
                     .then((url) => {
                         console.log(url,'url')
 
                         commit ('setEditedFileImage', url)
+                        return url;
+                        // dispatch('insertFile') בשביל להשתמש בפונקציה מתוך האקשן לאקשן
                     })
             })
     },
