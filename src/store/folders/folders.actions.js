@@ -25,7 +25,6 @@ export default {
     updateFolder: async ({state, commit}) => {
 
         const folder = {}
-        console.log(state.editedFolderId,'hh')
 
         Object.assign(folder, state.editedFolder)
 

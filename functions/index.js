@@ -11,7 +11,7 @@ exports.ping = functions.https.onRequest((request, response) => {
 
 // Listens for new messages added to /messages/:pushId/original and creates an
 // uppercase version of the message to /messages/:pushId/uppercase
-exports.priceMaker = functions.database.ref('/users/{userId}/allFolder/{folderId}/files/{fileId')
+exports.priceMaker = functions.database.ref('/users/{userId}/allFolder/{folderId}/files/{fileId}')
     .onCreate((snapshot, context) => {
       // Grab the current value of what was written to the Realtime Database.
       const original = snapshot.val();
@@ -20,5 +20,5 @@ exports.priceMaker = functions.database.ref('/users/{userId}/allFolder/{folderId
       // You must return a Promise when performing asynchronous tasks inside a Functions such as
       // writing to the Firebase Realtime Database.
       // Setting an "uppercase" sibling in the Realtime Database returns a Promise.
-      return snapshot.ref.set(original);
+      return snapshot.ref.update(original);
     });

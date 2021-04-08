@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <Folders v-if="isReady"/>
-    <q-btn class="add-btn" fab icon="add" color="accent" glossy @click="goToAddFolder()"/>
+    <q-btn class="add-btn" fab icon="add" color="primary" glossy @click="goToAddFolder()"/>
   </div>
 </template>
 
@@ -57,3 +57,16 @@ export default {
 }
 
 </style>
+<!-- ".read": "auth !== null && auth.uid === $uid",
+        ".write": "auth !== null && auth.uid === $uid"-->
+
+<!--{
+  "rules": {
+    "users": {
+      "$uid": {
+        ".read": "auth.uid === $uid",
+        ".write": "auth.uid === $uid"
+      }
+    }
+  }
+}-->

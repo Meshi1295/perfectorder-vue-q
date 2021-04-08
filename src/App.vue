@@ -67,7 +67,6 @@ export default {
           .catch(() => {
             alert('error')
       });
-
     }
   }
 

@@ -2,7 +2,7 @@
   <div>
 
     <Files v-if="waitForData"/>
-    <q-btn class="add-btn" fab icon="add" color="accent" glossy @click="goToAddFile()"/>
+    <q-btn class="add-btn" fab icon="add" color="primary" glossy @click="goToAddFile()"/>
 
   </div>
 </template>
