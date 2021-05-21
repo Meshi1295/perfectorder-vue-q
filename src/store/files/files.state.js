@@ -14,5 +14,4 @@ export default {
         isPaid: false
     },
     model: null
-
 }
