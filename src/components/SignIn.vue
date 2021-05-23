@@ -37,6 +37,7 @@
 
 import firebaseInstance from "@/drivers/firebase/index";
 
+
 export default {
   name: "SignIn",
   data() {
@@ -52,7 +53,7 @@ export default {
           .then((userCredential) => {
             // Signed in
             var user = userCredential.user;
-            this.$router.push('/home')
+            this.$router.push('/SummaryPage')
           })
           .catch((error) => {
             var errorCode = error.code;

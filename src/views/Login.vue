@@ -13,11 +13,11 @@ export default {
   name: "Login",
   components: {Register, SignIn},
 
-  // created() {
-  //   if(window.user){
-  //     this.$router.push('/')
-  //   }
-  // }
+  created() {
+    if(window.user){
+      this.$router.push('/SummaryPage')
+    }
+  }
 }
 </script>
 
