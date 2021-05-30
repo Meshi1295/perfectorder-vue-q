@@ -4,7 +4,7 @@ const routes = [
         path: '/', component: () => import('../layouts/MainLayout.vue'), meta: {authNotRequired: true},
         children: [
             {path: '/login', component: () => import('../views/Login'), meta: {authNotRequired: true}},
-            {path: '/SummaryPage', component: () => import('../views/SummaryPage'), meta: {authNotRequired: false}},
+            {path: '/SummaryPage', component: () => import('../views/SummaryPage'), meta: {authNotRequired: true}},
             {path: '/home', component: () => import('../views/Home'), meta: {authNotRequired: false}},
             {path: '/folder/:id', component: () => import( '../views/Folder.vue'), meta: {authNotRequired: false}},
             {

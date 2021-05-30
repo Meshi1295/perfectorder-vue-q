@@ -1,12 +1,13 @@
 <template>
   <div>
-  <q-card >
-    <q-img src="https://cdn.quasar.dev/img/parallax2.jpg">
-      <div class="text-subtitle2 absolute-top text-center">
-        דואר שהגיע החודש
-      </div>
-    </q-img>
-  </q-card>
+    <q-item>
+      <q-card>
+        <img src="../../assets/mail.png"/>
+        <div class="text-subtitle2 absolute-top text-center">
+          דואר שהגיע החודש
+        </div>
+      </q-card>
+    </q-item>
   </div>
 </template>
 
@@ -16,6 +17,6 @@ export default {
 }
 </script>
 
-<style lang="sass" scoped>
+<style scoped>
 
 </style>
